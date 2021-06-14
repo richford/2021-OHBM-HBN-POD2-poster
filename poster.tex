@@ -1,0 +1,347 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% baposter Portrait Poster
+% LaTeX Template
+% Version 1.0 (15/5/13)
+%
+% Created by:
+% Brian Amberg (baposter@brian-amberg.de)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------
+
+\documentclass[a0paper,landscape,fontscale=0.395]{baposter}
+
+\usepackage[font=small,labelfont=bf]{caption} % Required for specifying captions to tables and figures
+\usepackage{booktabs} % Horizontal rules in tables
+\usepackage{enumitem} % To change spacing in itemize and enumerate lists
+\usepackage{multicol}
+\usepackage{relsize} % Used for making text smaller in some places
+\usepackage{amsfonts, amsmath, amsthm, amssymb} % For math fonts, symbols and environments
+\usepackage{wrapfig} % Allows wrapping text around tables and figures
+\usepackage[export]{adjustbox}% http://ctan.org/pkg/adjustbox
+\usepackage{palatino} % Uncomment to use the Palatino font
+\usepackage{graphicx} % Required for including images
+\usepackage{graphbox}
+\usepackage{color}
+\usepackage{mathtools}
+\usepackage{hyperref}
+
+\graphicspath{{figures/}} % Directory in which figures are stored
+
+\definecolor{bordercol}{RGB}{256,256,256} % Border color of content boxes
+\definecolor{headercol1}{RGB}{51,0,111} % Background color for the header in the content boxes (left side)
+\definecolor{headercol2}{RGB}{51,0,111} % Background color for the header in the content boxes (middle)
+\definecolor{headerfontcol}{RGB}{256,256,256} % Text color for the header text in the content boxes
+\definecolor{boxcolor}{RGB}{256,256,256} % Background color for the content in the content boxes
+
+\newenvironment{Figure}
+  {\par\medskip\noindent\minipage{\linewidth}}
+  {\endminipage\par\medskip}
+
+\DeclarePairedDelimiterX{\norm}[1]{\lVert}{\rVert}{#1}
+\DeclareMathOperator{\Tr}{Tr}
+
+\begin{document}
+
+\begin{poster}{
+    columns=3,
+    grid=false,
+    headerheight=0.1\textheight,
+    borderColor=bordercol, % Border color of content boxes
+    headerColorOne=headercol1, % Background color for the header in the content boxes (left side)
+    headerColorTwo=headercol2, % Background color for the header in the content boxes (middle)
+    headerFontColor=headerfontcol, % Text color for the header text in the content boxes
+    boxColorOne=boxcolor, % Background color for the content in the content boxes
+    headershape=roundedright, % Specify the rounded corner in the content box headers
+    headerfont=\Large\sf\bf, % Font modifiers for the text in the content box headers
+    textborder=rectangle,
+    background=none,
+    headerborder=open, % Change to closed for a line under the content box headers
+    boxshade=plain
+}
+{}
+%
+%----------------------------------------------------------------------------
+%	TITLE AND AUTHOR NAME
+%----------------------------------------------------------------------------
+%
+{\sf\bf A preprocessed open diffusion derivatives dataset from the Healthy Brain Network} % Poster title
+{%
+    \vspace{1em}
+    Adam Richie-Halford\textsuperscript{\textasteriskcentered,1}, %
+    Matthew Cieslak\textsuperscript{\textasteriskcentered,2}, %
+    Alexandre R. Franco\textsuperscript{3}, %
+    Valerie J. Sydnor\textsuperscript{2}, %
+    Jason Yeatman\textsuperscript{4}, %
+    Lei Ai\textsuperscript{3}, %
+    Michael Milham\textsuperscript{3}, %
+    \hfill OHBM 2021 Poster 1349 \hspace{0.5em} \null \\ % Author names
+    the Fibr raters, %
+    Theodore D. Satterthwaite\textsuperscript{\textasteriskcentered\textasteriskcentered,2}, %
+    Ariel Rokem\textsuperscript{\textasteriskcentered\textasteriskcentered,1}%
+    \hfill Contact: richford@uw.edu \hspace{0.5em} \null \\ % Author names (cont)
+    {\smaller%
+        1. University of Washington, %
+        2. University of Pennsylvania, %
+        3. Child Mind Institute, %
+        4. Stanford University %
+        \hfill %
+        (%
+            \textsuperscript{\textasteriskcentered} These authors contributed equally, %
+            \textsuperscript{\textasteriskcentered\textasteriskcentered} These authors contributed equally%
+        ) \hspace{0.5em} \null%
+    }
+} % Author affiliations and email addresses
+{%
+\includegraphics[align=c,height=1.75cm]{logos/UWlogo.png}%
+\includegraphics[align=c,height=2.00cm]{logos/PennShield.png}%
+\includegraphics[align=c,height=2.00cm]{logos/stanford_logo.png}%
+\includegraphics[align=c,height=2.00cm]{logos/cmi_logo.jpeg}%
+} % University/lab logos
+\vspace{-10em}
+
+%----------------------------------------------------------------------------
+%	INTRODUCTION
+%----------------------------------------------------------------------------
+
+\headerbox{Introduction}{name=introduction,column=0,row=0}{
+
+\begin{itemize}[nosep, leftmargin=*]
+    \item The Healthy Brain Network (HBN;
+    \url{http://fcon_1000.projects.nitrc.org/indi/cmi_healthy_brain_network/}) is
+    collecting data from 10,000 children and adolescents together with extensive
+    behavioral and health assessments \cite{alexander2017hbn}.
+    \item This includes diffusion MRI (dMRI) data, allowing for analysis of the
+    physical properties of white matter.
+    \item However, dMRI analysis is complicated by the need for complicated
+    preprocessing steps. Misapplication of these steps can induce bias in
+    subsequent interpretation \cite{jones2010pitfalls}.
+    \item Once preprocessing is done correctly, there is little need for
+    downstream researchers to repeat these steps.
+\end{itemize}
+
+\vspace{0.5em}
+\noindent\textbf{%
+    \underline{Challenge}: %
+    Provide an openly available preprocessed diffusion derivatives dataset that
+    applies best practices in a robust and transparent way.%
+}
+\vspace{0.5em}
+
+\begin{itemize}[nosep, leftmargin=*]
+    \item We introduce the HBN Preprocessed Open Diffusion Derivatives
+    (HBN-POD2), a large dataset for the analysis of structural brain
+    connectivity and pediatric mental health.
+    \item Preprocessing was performed in QSIPrep \cite{cieslak2020qsiprep}
+    version 0.12.2. QSIPrep is A BIDS App that automatically builds
+    preprocessing pipelines based on BIDS inputs. 
+\end{itemize}
+
+\begin{Figure}
+    \centering
+    \includegraphics[width=\linewidth]{dataflow.pdf}
+    \captionof{figure}{
+        {\bf HBN-POD2 data provenance}:
+        {\bf (A)} Imaging data for 2,747 subjects, aged 5-21 years and
+        collected at four sites in the New York City area, was made
+        available through the Functional Connectomes Project and the
+        International Neuroimaging Data-Sharing Initiative (FCP-INDI).
+        {\bf (B)} These data were curated for compliance to the
+        Brain Imaging Data Structure (BIDS) specification and
+        availability of imaging metadata in json format. 2,615 subjects
+        met this specification.
+        {\bf (C)} Imaging data was preprocessed using qsiprep to group,
+        distortion correct, motion correct, denoise, coregister and
+        resample MRI scans. 2,136 subjects passed this step, with the
+        majority of failures coming from subject with missing dMRI scans.
+        {\bf (D)} A image classification algorithm was trained on a
+        combination of both expert and citizen scientist reviews (see
+        Figure 2) to assign either passing or failing quality control
+        (QC) scores to each individual.
+        {\bf (E)} The HBN-POD2 dataset, including QC scoring, is openly
+        available through FCP-INDI.
+    }
+\end{Figure}
+}
+
+%----------------------------------------------------------------------------
+%	CONCLUSION
+%----------------------------------------------------------------------------
+
+\headerbox{Conclusion and future work}{name=conclusion,column=0,below=introduction}{
+
+\begin{itemize}[nosep, leftmargin=*]
+    \item We present a large preprocessed dMRI dataset for the study of pediatric
+    mental health and structural brain connectivity.
+
+    \begin{itemize}[nosep, leftmargin=*]
+        \item 2,136 subjects, aged 5-21
+        \item preprocessed DWI
+        \item including QC ratings created from a combination of expert ratings and citizen scientists
+        \item openly available on FCP-INDI
+    \end{itemize}
+
+    \item HBN-POD2 is amenable to different dMRI analysis, including tractometry, graph theoretical analysis, and combinations with fMRI.
+
+    \item Future work:
+    \begin{itemize}[nosep, leftmargin=*]
+        \item HBN-POD2 will grow as HBN reaches its 10,000 participant goal.
+        \item Develop a deep learning model for QC of future releases
+        without the need for citizen science ratings.
+    \end{itemize}
+\end{itemize}
+
+}
+
+%----------------------------------------------------------------------------
+%	RESULTS 1
+%----------------------------------------------------------------------------
+
+\headerbox{Quality Control}{name=qc,column=1,span=2,row=0}{
+
+\begin{itemize}[noitemsep, leftmargin=*]
+    \item Six dMRI experts rated 200 participants’ processed data on a 1-5 scale using the dmriprep-viewer interface \url{https://www.nipreps.org/dmriprep-viewer})
+    \item We found excellent inter-rater reliability: ICC3k=0.93 (95\% CI: [0.91, 0.94]) Ratings are available in \url{https://github.com/richford/hbn-pod2-expert-qc}.
+    \item We call this subset the ``gold standard'' QC dataset.
+    \item But the size of HBN-POD2 makes expert QC on the full dataset prohibitive, we estimate QC of the full dataset would take each FTE expert rater ~200 hours.
+\end{itemize}
+
+\vspace{0.5em}
+\noindent\textbf{%
+    \underline{Challenge}: %
+    Generate QC labels for a large dMRI dataset when expert ratings are prohibitively time consuming.%
+}
+\vspace{0.5em}
+
+\begin{itemize}[noitemsep, leftmargin=*]
+    \item Based on the SwipesForScience framework
+    (https://swipesforscience.org/; \cite{keshavan2019citizen}), we created a
+    citizen science web-app that presents static/dynamic views of b=0 maps and
+    directionally-encoded FA maps for a binary (pass/fail) decision for 1,653
+    HBN subjects.
+    \item 374 citizen scientists provided $587,778$ ratings (of these, 133
+    citizen scientists provided $>3,000$ votes each) for a mean of $>50$ ratings
+    per slice (or $>200$ ratings per subject).
+    \item We then trained a gradient boosting model (XGB) to predict expert scores
+    based on a combination of citizen science ratings and automated QSIPrep QC
+    metrics, attaining $R^2 = 0.80$ on a held-out test set from the ``gold standard.''
+    \item A separate model trained on only the QSIPrep QC metrics attained $R^2 = 0.68$,
+    demonstrating the added value of the citizen science raters.
+\end{itemize}
+
+\begin{multicols}{2}
+    \begin{Figure}
+        \centering
+        \includegraphics[width=0.75\linewidth]{qc.pdf}
+        \captionof{figure}{
+            {\bf HBN-POD2 quality control (QC) instruments}:
+            {\bf (A)} The user interface for citizen science QC. After a
+            tutorial, users are asked to give binary pass/fail ratings to
+            each subject's color scale fractional anisotropy image. The
+            intuitive swipe or click interface allows citizen scientists to
+            review more images than is practical for expert review. Expert
+            reviewers use the more advanced qsiprep-viewer interface, where
+            they can
+            {\bf (B)} view the distribution of QC metrics for the entire
+            study using interactive scatterplots and violin plots, and
+            {\bf (C)} inspect Individual subjects' preprocessing results,
+            including corrected dMRI images, frame displacement, q-space
+            sampling distributions, registration information, and a DTI
+            model.
+        }
+    \end{Figure}
+    \columnbreak
+    \begin{Figure}
+        \centering
+        \includegraphics[width=0.75\linewidth]{qc-kappa.pdf}
+        \captionof{figure}{
+            {\bf HBN-POD2 quality control (QC) results}:
+            Six dMRI experts (with anonymized names) rated a subset of
+            200 subjects, with acceptable inter-rater reliability:
+            $\textbf{ICC3k} = 0.930 (95\% CI: [0.91, 0.94])$,
+            $\textbf{ICC3} = 0.688 (95\% CI: [0.64, 0.74])$,
+            $\langle \kappa \rangle = 0.648$.
+            We trained a gradient boosting model (XGB) on the average expert
+            rating, obtaining $R^2 = 0.80$ on a held-out test set.  Treating XGB
+            as a seventh expert rater, preserves inter-rater reliability:
+            $\textbf{ICC3k} = 0.945 (95\% CI: [0.93, 0.96])$,
+            $\textbf{ICC3} = 0.709 (95\% CI: [0.66, 0.75])$.
+            This entitles us to extend it's ratings to the entire HBN-POD2
+            dataset.
+        }
+    \end{Figure}
+
+    \vspace{2em}
+    {\smaller %
+        \textsuperscript{\textasteriskcentered} \textbf{ICC3} and \textbf{ICC3k}
+        are appropriate when a fixed set of $k$ raters rate each subject (i.e. a
+        fully crossed design).  When all subjects are coded by multiple raters
+        and the average of their ratings is used for hypothesis testing,
+        \textbf{ICC3k} is appropriate.  When a subset of subjects is coded by
+        multiple raters and the reliability of their ratings is meant to
+        generalize to other subjects rated by only one coder, the single-measure
+        \textbf{ICC3} must be used.
+    }
+\end{multicols}
+
+\begin{itemize}[noitemsep, leftmargin=*]
+    \item Treating the new XGB model as an additional expert rater, we attain
+    $\textbf{ICC3k} = 0.945 (95\% CI: [0.93, 0.96])$ and 
+    $\textbf{ICC3} = 0.709 (95\% CI: [0.66, 0.75])$.
+    \item The reliability of the XGB model entitles us to apply the XGB ratings
+    to the remaining HBN-POD2 scans, generating QC labels for the entire
+    dataset.
+    \item HBN-POD2 offers open QC metrics, eliminating the need for
+    investigators to repeat quality assessment for over 2,000 scans.
+\end{itemize}
+}
+
+%----------------------------------------------------------------------------
+%   REFERENCES
+%----------------------------------------------------------------------------
+
+\headerbox{References}{name=references,column=0,span=2,below=conclusion,above=bottom}{
+
+\begin{multicols}{2}
+\smaller \smaller % Reduce the font size in this block
+\renewcommand{\section}[2]{\vskip 0.05em} % Get rid of the default "References" section title
+\nocite{*} % Insert publications even if they are not cited in the poster
+
+% \printbibliography
+\bibliographystyle{unsrt}
+\bibliography{poster}
+\end{multicols}
+}
+
+%----------------------------------------------------------------------------
+%	ACKNOWLEDGMENTS
+%----------------------------------------------------------------------------
+
+\headerbox{Acknowledgments}{name=acknowledgments,column=2,below=conclusion,above=bottom}{
+
+\begin{multicols}{2}
+\smaller % Reduce the font size in this block
+\includegraphics[height=0.8cm]{logos/nimh-logo.png}
+
+\includegraphics[height=0.75cm]{logos/eSciencelogo.png}
+
+\hspace{0.5em} \includegraphics[height=0.88cm]{logos/SloanLogo.png}
+
+\hspace{0.5em} \includegraphics[height=0.88cm]{logos/MooreFdn.png}
+
+
+\end{multicols}
+}
+
+\end{poster}
+
+\end{document}
